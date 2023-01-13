@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Users from "./components/dashboard/Users";
 import AppContext from "./context/AppContext";
+import "react-toastify/dist/ReactToastify.min.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </AppContext>
   );
 }

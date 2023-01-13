@@ -6,6 +6,8 @@ import InputField from "../components/inputs/InputField";
 import PasswordField from "../components/inputs/PasswordField";
 import * as Yup from "yup";
 import useAppContext from "../hooks/useAppContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginValidationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -14,13 +16,14 @@ const LoginValidationSchema = Yup.object().shape({
 
 const Login = () => {
   const app = useAppContext();
+  const navigate = useNavigate();
   return (
-    <div className="w-full flex flex-col md:flex-row bg-white lg:h-screen">
+    <div className="w-full space-y-6 md:space-y-0 flex flex-col pt-6 px-6 lg:p-0 md:flex-row bg-white lg:h-screen">
       <div className="w-full lg:w-1/2 lg:pl-[6.25rem] flex flex-col">
-        <div className="w-full py-8 pl-10">
+        <div className="w-full p md:py-8 md:pl-10">
           <img src={Logo} className="" />
         </div>
-        <div className="w-full h-full flex items-center justify-center relative">
+        <div className="w-full h-full  flex items-center justify-center relative">
           <img src={Hero} className="w-3/4" />
         </div>
       </div>
@@ -35,7 +38,30 @@ const Login = () => {
           validationSchema={LoginValidationSchema}
           onSubmit={({ email, password }) => {
             if (email === "admin@mail.com" && password === "admin") {
-              console.log("logged in");
+              app.dispatch({
+                type: "LOGIN",
+                payload: {
+                  ...app,
+                  currentUser: {
+                    email,
+                    id: 232,
+                    name: "LendSqr Admin",
+                  },
+                },
+              });
+
+              navigate("/dashboard");
+            } else {
+              toast.warn("Email or password is incorrect", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
             }
           }}
         >
