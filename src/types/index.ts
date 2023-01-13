@@ -1,3 +1,10 @@
+import {
+  TableInstance,
+  UsePaginationInstanceProps,
+  UsePaginationState,
+  UseSortByInstanceProps,
+} from "react-table";
+
 export type Education = {
   level: string;
   employmentStatus: string;
@@ -65,7 +72,7 @@ export interface AppState {
   currentUser: null | CurrentUser;
 }
 
-export type AppActions = "LOGIN" | "LOGOUT" | "GETUSERS";
+export type AppActions = "LOGIN" | "LOGOUT" | "ADDUSERS";
 
 export interface AppReducerActions<S extends AppState, A> {
   type: A;
@@ -77,3 +84,9 @@ export interface AppReducerActions<S extends AppState, A> {
 export interface AppContextType extends AppState {
   dispatch: React.Dispatch<AppReducerActions<AppState, AppActions>>;
 }
+
+export type TableInstanceWithHooks<T extends object> = TableInstance<T> &
+  UsePaginationInstanceProps<T> &
+  UseSortByInstanceProps<T> & {
+    state: UsePaginationState<T>;
+  };
