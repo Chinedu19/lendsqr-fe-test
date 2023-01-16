@@ -13,7 +13,8 @@ import useAppContext from "../hooks/useAppContext";
 type NavbarProps = {};
 const demoImgUrl = "https://picsum.photos/200";
 const Navbar = ({}: NavbarProps) => {
-  const { currentUser } = useAppContext();
+  const { currentUser, session } = useAppContext();
+
   return (
     <div className="flex items-center justify-between bg-white shadow-md p-[30px] z-50">
       <img src={Logo} className="" />
@@ -28,7 +29,7 @@ const Navbar = ({}: NavbarProps) => {
                 src={demoImgUrl}
                 className="w-[48px] h-[48px] rounded-full mr-5"
               />
-              {currentUser?.name}
+              {currentUser?.name || session?.name}
               <AiFillCaretDown
                 className="ml-1 -mr-1 text-primary hover:text-primary/90"
                 size={10}

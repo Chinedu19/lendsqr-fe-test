@@ -83,6 +83,7 @@ export interface AppReducerActions<S extends AppState, A> {
 
 export interface AppContextType extends AppState {
   dispatch: React.Dispatch<AppReducerActions<AppState, AppActions>>;
+  session: CurrentUser | null;
 }
 
 export type TableInstanceWithHooks<T extends object> = TableInstance<T> &

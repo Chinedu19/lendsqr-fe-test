@@ -13,7 +13,13 @@ import "./UserTable.css";
 import useAppContext from "../../hooks/useAppContext";
 import { TableInstanceWithHooks, UserData } from "../../types";
 import { Menu, Transition } from "@headlessui/react";
-import { BsChevronDown, BsChevronLeft, BsChevronRight } from "react-icons/bs";
+
+import {
+  BsChevronDown,
+  BsChevronLeft,
+  BsChevronRight,
+  BsThreeDotsVertical,
+} from "react-icons/bs";
 import classNames from "classnames";
 interface Colums {
   orgName: string;
@@ -45,6 +51,15 @@ const columns: Column<UserData>[] = [
   {
     Header: "Status",
     accessor: "createdAt",
+  },
+  {
+    Header: " ",
+    Cell: ({ cell }) => (
+      // className={cell.row.values.name}
+      <button>
+        <BsThreeDotsVertical className="text-primary" size={15} />
+      </button>
+    ),
   },
 ];
 
@@ -104,7 +119,6 @@ const UserTable = () => {
           {...getTableProps()}
         >
           <thead className="">
-            
             {
               // Loop over the header rows
               headerGroups.map((headerGroup) => (

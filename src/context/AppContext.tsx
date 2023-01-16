@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import { UserData, AppState, AppReducerActions, AppActions } from "../types";
 import { baseUrl, getAppUsers } from "../api";
 import { ApplicationContext, initialState } from ".";
 import axios from "axios";
+import useAuthGuard from "../hooks/useAuthGuard";
 
 const userInfoReducer = (
   state: AppState,
@@ -19,15 +20,11 @@ const userInfoReducer = (
       return initialState;
 
     case "ADDUSERS":
-      if (state.currentUser) {
-        console.log("Getting users");
-        if (action.payload) {
-          return { ...state, appUsers: action.payload.appUsers };
-        }
-        console.error("payload required");
+      console.log("Getting users");
+      if (action.payload) {
+        return { ...state, appUsers: action.payload.appUsers };
       } else {
-        console.error("no user logged in");
-        return state;
+        console.error("payload required");
       }
 
     default:
@@ -39,12 +36,13 @@ type AppContextProps = {
 };
 const AppContext = ({ children }: AppContextProps) => {
   const [appState, appDispatch] = useReducer(userInfoReducer, initialState);
-
+  const { getSession } = useAuthGuard();
+  const session = useMemo(() => getSession(), []);
   useEffect(() => {
     let controller: AbortController | null = null;
     // Get app users if admin is logged in
     console.log("useEffect");
-    if (appState.currentUser) {
+    if (appState.currentUser || session) {
       console.log("starting Process");
       controller = new AbortController();
       axios
@@ -64,12 +62,13 @@ const AppContext = ({ children }: AppContextProps) => {
       // Cancel request if state unmounts
       if (controller) controller.abort();
     };
-  }, [appState.currentUser]);
+  }, [appState.currentUser, session]);
   return (
     <ApplicationContext.Provider
       value={{
         ...appState,
         dispatch: appDispatch,
+        session: session,
       }}
     >
       {children}

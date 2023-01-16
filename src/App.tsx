@@ -8,6 +8,7 @@ import Users from "./components/dashboard/Users";
 import AppContext from "./context/AppContext";
 import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer } from "react-toastify";
+import { UserInfo } from "./components/dashboard/UserInfo";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="/dashboard/user/" element={<UserInfo />} />
             <Route path="/dashboard/" element={<Users />} />
           </Route>
         </Routes>

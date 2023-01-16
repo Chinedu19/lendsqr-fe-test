@@ -8,7 +8,13 @@ import * as Yup from "yup";
 import useAppContext from "../hooks/useAppContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import useAuthGuard from "../hooks/useAuthGuard";
 
+const demoUser = {
+  email: "admin@mail.com",
+  id: 232,
+  name: "LendSqr Admin",
+};
 const LoginValidationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
   password: Yup.string().min(4).required(),
@@ -17,6 +23,7 @@ const LoginValidationSchema = Yup.object().shape({
 const Login = () => {
   const app = useAppContext();
   const navigate = useNavigate();
+  const { setSession } = useAuthGuard();
   return (
     <div className="w-full space-y-6 md:space-y-0 flex flex-col pt-6 px-6 lg:p-0 md:flex-row bg-white lg:h-screen">
       <div className="w-full lg:w-1/2 lg:pl-[6.25rem] flex flex-col">
@@ -37,18 +44,15 @@ const Login = () => {
           }}
           validationSchema={LoginValidationSchema}
           onSubmit={({ email, password }) => {
-            if (email === "admin@mail.com" && password === "admin") {
+            if (email === demoUser.email && password === "admin") {
               app.dispatch({
                 type: "LOGIN",
                 payload: {
                   ...app,
-                  currentUser: {
-                    email,
-                    id: 232,
-                    name: "LendSqr Admin",
-                  },
+                  currentUser: demoUser,
                 },
               });
+              setSession(demoUser);
 
               navigate("/dashboard");
             } else {

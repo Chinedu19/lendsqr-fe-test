@@ -8,6 +8,9 @@ module.exports = {
         subprimary: "#545F7D",
         secondary: "#39CDCC",
       },
+      fontFamily: {
+        workSans: ["Work Sans", "sans-serif"],
+      },
     },
   },
   plugins: [],
